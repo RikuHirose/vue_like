@@ -20,6 +20,7 @@
                         <tr>
                           <th scope="col">id</th>
                           <th scope="col">Content</th>
+                          <th scope="col">Like</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -31,6 +32,14 @@
                                     </a>
                                 </th>
                               <td>{{ $post->content }}</td>
+                              <td>
+                                <like
+                                :post-id="{{ json_encode($post->id) }}"
+                                :user-id="{{ json_encode($userAuth->id) }}"
+                                :default-Liked="{{ json_encode($post->defaultLiked($post, $userAuth->id)) }}"
+                                :default-Count="{{ json_encode(count($post->likes)) }}"
+                                ></like>
+                              </td>
                             </tr>
                         @endforeach
                       </tbody>

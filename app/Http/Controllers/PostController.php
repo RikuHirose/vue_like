@@ -15,8 +15,12 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+        $userAuth = \Auth::user();
+        $posts->load('likes');
+
         return view('posts.index', [
-            'posts' => $posts
+            'posts' => $posts,
+            'userAuth' => $userAuth
         ]);
     }
 
@@ -62,6 +66,7 @@ class PostController extends Controller
         $post->load('likes');
 
         $defaultCount = count($post->likes);
+
         $defaultLiked = $post->likes->where('user_id', $userAuth->id)->first();
         if(count($defaultLiked) == 0) {
             $defaultLiked == false;
