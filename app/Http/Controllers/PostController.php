@@ -14,9 +14,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
         $userAuth = \Auth::user();
+        $posts = Post::all();
         $posts->load('likes');
+
+        // likeが多い順にソート
+        $posts = $posts->toArray();
+        $sort = [];
+        foreach ($posts as $key => $post) {
+            $sort[$key] = $post['likes'];
+        }
+
+        array_multisort($sort, SORT_DESC, $posts);
 
         return view('posts.index', [
             'posts' => $posts,

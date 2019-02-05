@@ -16,9 +16,17 @@ class Post extends Model
     }
 
 
-    public function defaultLiked($post, $user_auth_id)
+    public static function defaultLiked($post, $user_auth_id)
     {
-      $defaultLiked = $post->likes->where('user_id', $user_auth_id)->first();
+      // $defaultLiked = $post->likes->where('user_id', $user_auth_id)->first();
+
+      $defaultLiked = 0;
+      foreach ($post['likes'] as $key => $like) {
+          if($like['user_id'] == $user_auth_id) {
+            $defaultLiked = 1;
+            break;
+          }
+      }
 
       if(count($defaultLiked) == 0) {
             $defaultLiked == false;
@@ -28,5 +36,6 @@ class Post extends Model
 
       return $defaultLiked;
     }
+
 
 }
